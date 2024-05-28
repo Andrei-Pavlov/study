@@ -26,4 +26,5 @@ JPTV21<br>
 
 
 # Схема базы данных (ER диаграмма)<br>
-![image](https://github.com/Andrei-Pavlov/study/assets/102020580/fc72b29e-6bfa-419c-9eb2-62139858199a)
+![image](https://github.com/Andrei-Pavlov/study/assets/102020580/10d1a198-3deb-473d-b249-fb1e18bd4210)
+

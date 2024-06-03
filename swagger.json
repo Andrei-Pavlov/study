@@ -1,0 +1,415 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Study API",
+    "description": "API для обмена учебными материалами"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/users/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Регистрация пользователя",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешная регистрация"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Аутентификация пользователя",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешная аутентификация"
+          }
+        }
+      }
+    },
+    "/materials": {
+      "post": {
+        "tags": ["Materials"],
+        "summary": "Создание учебного материала",
+        "security": [{"Bearer": []}],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Material"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Материал создан",
+            "schema": {
+              "$ref": "#/definitions/MaterialMessage"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Materials"],
+        "summary": "Получение всех учебных материалов",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список материалов"
+          }
+        }
+      }
+    },
+    "/materials/{id}": {
+      "get": {
+        "tags": ["Materials"],
+        "summary": "Получение учебного материала по ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Материал найден"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Materials"],
+        "summary": "Обновление учебного материала",
+        "security": [{"Bearer": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Material"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Материал обновлен"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Materials"],
+        "summary": "Удаление учебного материала",
+        "security": [{"Bearer": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Материал удален"
+          }
+        }
+      }
+    },
+    "/ratings/{materialId}": {
+      "post": {
+        "tags": ["Ratings"],
+        "summary": "Создание рейтинга",
+        "security": [{"Bearer": []}],
+        "parameters": [
+          {
+            "name": "materialId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "score - min 1 max 5",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Rating"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Рейтинг создан"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Ratings"],
+        "summary": "Получение рейтингов для материала",
+        "parameters": [
+          {
+            "name": "materialId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список рейтингов"
+          }
+        }
+      }
+    },
+    "/comments/{materialId}": {
+      "post": {
+        "tags": ["Comments"],
+        "summary": "Создание комментария",
+        "security": [{"Bearer": []}],
+        "parameters": [
+          {
+            "name": "materialId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Комментарий создан"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Comments"],
+        "summary": "Получение комментариев для материала",
+        "parameters": [
+          {
+            "name": "materialId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список комментариев"
+          }
+        }
+      }
+    },
+    "/categories": {
+      "post": {
+        "tags": ["Categories"],
+        "summary": "Создание категории",
+        "security": [{"Bearer": []}],
+        "parameters": [
+        {
+        "name": "body",
+        "in": "body",
+        "required": true,
+        "schema": {
+        "$ref": "#/definitions/Category"
+        }
+        }
+        ],
+        "responses": {
+        "200": {
+        "description": "Категория создана"
+        }
+        }
+        },
+        "get": {
+        "tags": ["Categories"],
+        "summary": "Получение всех категорий",
+        "responses": {
+        "200": {
+        "description": "Список категорий"
+        }
+        }
+        }
+        },
+        "/categories/{categoryId}/subcategories": {
+        "post": {
+        "tags": ["Subcategories"],
+        "summary": "Создание подкатегории",
+        "security": [{"Bearer": []}],
+        "parameters": [
+        {
+        "name": "categoryId",
+        "in": "path",
+        "required": true,
+        "type": "integer"
+        },
+        {
+        "name": "body",
+        "in": "body",
+        "required": true,
+        "schema": {
+        "$ref": "#/definitions/Subcategory"
+        }
+        }
+        ],
+        "responses": {
+        "200": {
+        "description": "Подкатегория создана"
+        }
+        }
+        },
+        "get": {
+        "tags": ["Subcategories"],
+        "summary": "Получение всех подкатегорий для категории",
+        "parameters": [
+        {
+        "name": "categoryId",
+        "in": "path",
+        "required": true,
+        "type": "integer"
+        }
+        ],
+        "responses": {
+        "200": {
+        "description": "Список подкатегорий"
+        }
+        }
+        }
+        }
+        },
+        "definitions": {
+        "User": {
+        "type": "object",
+        "properties": {
+        "email": {
+        "type": "string"
+        },
+        "password": {
+        "type": "string"
+        }
+        }
+        },
+        "Material": {
+        "type": "object",
+        "properties": {
+        "title": {
+        "type": "string"
+        },
+        "description": {
+        "type": "string"
+        },
+        "url": {
+        "type": "string"
+        },
+        "SubcategoryId": {
+        "type": "integer"
+        },
+        "CategoryId": {
+        "type": "integer"
+        }
+        }
+        },
+        "MaterialMessage": {
+        "type": "object",
+        "properties": {
+        "message": {
+        "type": "string",
+        "example": "Пользователь {email} ({userId}) создал материал с названием {title}, в категории - {categoryName} ({categoryId}) и подкатегории - {subcategoryName} ({subcategoryId})"
+        }
+        }
+        },
+        "Rating": {
+        "type": "object",
+        "properties": {
+        "score": {
+        "type": "integer"
+        }
+        }
+        },
+        "Comment": {
+        "type": "object",
+        "properties": {
+        "text": {
+        "type": "string"
+        }
+        }
+        },
+        "Category": {
+        "type": "object",
+        "properties": {
+        "name": {
+        "type": "string"
+        }
+        }
+        },
+        "Subcategory": {
+        "type": "object",
+        "properties": {
+        "name": {
+        "type": "string"
+        }
+        }
+        }
+        }
+        }
